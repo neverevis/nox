@@ -6,7 +6,7 @@
 
 #include <platform/process.hpp>
 
-Nox::Process::Result Nox::Process::execute(const std::string& executable, std::vector<std::string>& arguments){
+Nox::Process::Result Nox::Process::execute(const std::string& executable, const std::vector<std::string>& arguments){
     Nox::Process::Result result;
     result.exit_code = -1;
     result.output_text = "";

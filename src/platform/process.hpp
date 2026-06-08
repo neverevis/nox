@@ -10,6 +10,6 @@ namespace Nox{
             std::string output_text;
         };
 
-        static Result execute(const std::string& executable, std::vector<std::string>& arguments);
+        static Result execute(const std::string& executable, const std::vector<std::string>& arguments);
     };
 }
