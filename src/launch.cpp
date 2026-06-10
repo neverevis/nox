@@ -3,6 +3,7 @@
 #include <string>
 #include <platform/process.hpp>
 #include <util/color.hpp>
+#include <filesystem>
 
 #include <platform/process.hpp>
 

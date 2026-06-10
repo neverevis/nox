@@ -13,8 +13,8 @@ Nox::Process::Result Nox::Process::execute(const std::string& executable, const 
 
     std::string command = executable;
 
-    for(std::string& argument : arguments){
-        command += " " + argument;
+    for(const std::string& argument : arguments){
+        command += " \"" + argument + "\"";
     }
 
     SECURITY_ATTRIBUTES saAttr;

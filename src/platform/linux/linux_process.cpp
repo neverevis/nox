@@ -19,6 +19,7 @@ Nox::Process::Result Nox::Process::execute(const std::string& executable, const 
     posix_spawn_file_actions_init(&actions);
 
     posix_spawn_file_actions_adddup2(&actions, pipefd[1], STDOUT_FILENO);
+    posix_spawn_file_actions_adddup2(&actions, pipefd[1], STDERR_FILENO);
     posix_spawn_file_actions_addclose(&actions, pipefd[0]);
 
     pid_t pid;
@@ -32,7 +33,13 @@ Nox::Process::Result Nox::Process::execute(const std::string& executable, const 
 
     argv.push_back(nullptr);
 
-    posix_spawnp(&pid, executable.c_str(), &actions, nullptr, argv.data(), environ);
+    int spawn_result = posix_spawnp(&pid, executable.c_str(), &actions, nullptr, argv.data(), environ);
+
+    if(spawn_result != 0){
+        close(pipefd[0]);
+        posix_spawn_file_actions_destroy(&actions);
+        return result;
+    }
 
     close(pipefd[1]);
 
