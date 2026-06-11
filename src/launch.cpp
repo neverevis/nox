@@ -1,9 +1,8 @@
 #include <iostream>
-#include <vector>
 #include <string>
 #include <platform/process.hpp>
 #include <util/color.hpp>
-#include <filesystem>
+#include <core/command.hpp>
 
 #include <platform/process.hpp>
 
@@ -26,7 +25,7 @@ int main(int argc, char** argv)
         Color::white <<
         " |" <<
         Color::bright_green <<
-        "run" <<
+        " run" <<
         Color::white <<
         "]" <<
         std::endl;
@@ -36,14 +35,21 @@ int main(int argc, char** argv)
 
     std::string command = argv[1];
 
+    Nox::Command cmd;
+
     if(command == "create"){
-        std::cout << Color::purple << "[nox] " << Color::green << "creating project" << Color::white << std::endl;
+        if(argc < 3){
+            printf("project must have a name");
+            return -1;
+        }
+        Nox::Command::Result rs = cmd.create(std::string(argv[2]));
+        printf("%s",rs.message.c_str());
     }
     else if(command == "build"){
-        std::cout << Color::purple << "[nox] " << Color::green << "building project" << Color::white << std::endl;
+        cmd.build();
     }
     else if(command == "run"){
-        std::cout << Color::purple << "[nox] " << Color::green << "running project" << Color::white << std::endl;
+        cmd.run();
     }
     else if(command == "--version"){
         std::cout << "nox 0.0.1" << std::endl;
@@ -51,8 +57,4 @@ int main(int argc, char** argv)
     else{
         std::cout << Color::purple << "[nox] " << Color::red << "unknown command" << Color::white << std::endl;
     }
-
-    Nox::Process::Result rs = Nox::Process::execute("gcc",{"--version"});
-
-    std::cout << rs.output_text;
 }
