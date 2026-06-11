@@ -1,57 +1,45 @@
-#include <iostream>
-#include <string>
 #include <platform/process.hpp>
-#include <util/color.hpp>
-#include <core/command.hpp>
 
+#include <util/color.hpp>
+#include <util/log.hpp>
+#include <core/command.hpp>
 #include <platform/process.hpp>
 
 using Color = Nox::Util::Color;
+using Log = Nox::Util::Log;
 
 int main(int argc, char** argv)
 {
     if(argc < 2){
-        std::cout << "Use: " <<
-        Color::bright_yellow <<
-        "nox " <<
-        Color::white <<
-        "[" <<
-        Color::bright_green <<
-        "create" <<
-        Color::white <<
-        " |" <<
-        Color::bright_green <<
-        " build" <<
-        Color::white <<
-        " |" <<
-        Color::bright_green <<
-        " run" <<
-        Color::white <<
-        "]" <<
-        std::endl;
+        Log::println("Use: {}nox {}[{}create {}| {}build {}| {}run{}]",Color::yellow, Color::white, Color::bright_green, Color::white, Color::bright_green, Color::white, Color::bright_green, Color::white);
 
         return -1;
     }
 
-    std::string command = argv[1];
+    std::string action = argv[1];
 
-    Nox::Command cmd;
+    Nox::Command command;
 
-    if(command == "create"){
+    if(action == "create"){
         if(argc < 3){
-            printf("project must have a name");
+            Log::println("{}Project must have a {}name!\n{}Use: {}nox {}create {}\"project_name\"",Color::white, Color::cyan, Color::white, Color::bright_green, Color::white, Color::blue);
             return -1;
         }
-        Nox::Command::Result rs = cmd.create(std::string(argv[2]));
-        printf("%s",rs.message.c_str());
+
+        Nox::Command::Result rs = command.create(argv[2]);
+
+        printf("%s", rs.message.c_str());
     }
-    else if(command == "build"){
-        cmd.build();
+
+    else if(action == "build"){
+        command.build();
     }
-    else if(command == "run"){
-        cmd.run();
+
+    else if(action == "run"){
+        command.run();
     }
-    else if(command == "--version"){
+
+    else if(action == "--version"){
         std::cout << "nox 0.0.1" << std::endl;
     }
     else{

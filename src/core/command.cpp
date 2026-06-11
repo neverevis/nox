@@ -8,21 +8,27 @@ namespace fs = std::filesystem;
 using c = Nox::Util::Color;
 
 namespace Nox{
-    Command::Result Command::create(const std::string& project_name){
+    Command::Result Command::create(fs::path project){
         Result result;
 
-        fs::path project(project_name);
-
-        if(!fs::create_directory(project)){
-            result.message = std::string(project_name + " already exists");
+        if(!create_directories(project)){
             result.success = false;
+            result.message = "failed to create project directory";
+            return result;
         }
 
-        fs::path dot_nox(project / ".nox");
-        fs::path source(project / "src");
-        fs::path build(project / "build");
+        if(!create_config(project)){
+            result.success = false;
+            result.message = "failed to create project config";
+            return result;
+        }
 
-        
+        if(!create_sources(project)){
+            result.success = false;
+            result.message = "failed to create project source";
+            return result;
+        }
+
         return result;
     }
 
@@ -34,5 +40,24 @@ namespace Nox{
     Command::Result Command::run(){
         Result result;
         return result;
+    }
+
+    bool Command::create_directories(const fs::path& project){
+        bool result = true;
+        result &= fs::create_directory(project);
+        result &= fs::create_directory(project / ".nox");
+        result &= fs::create_directory(project / ".nox" / "includes");
+        result &= fs::create_directory(project / "src");
+        result &= fs::create_directory(project / "build");
+
+        return result;
+    }
+
+    bool Command::create_config(const fs::path& project){
+        return true;
+    }
+
+    bool Command::create_sources(const fs::path& project){
+        return true;
     }
 }

@@ -1,17 +1,17 @@
 [
   {
     "directory": "F:\\Dev\\projects\\cpp\\nox",
-    "command": "clang++ -c -std=c++23 src/launch.cpp -o launch.o -Isrc",
+    "command": "clang++ -c -std=c++23 src/launch.cpp -o launch.o -Isrc -std=c++20",
     "file": "launch.cpp"
   },
   {
     "directory": "F:\\Dev\\projects\\cpp\\nox",
-    "command": "clang++ -c -std=c++23 src\\platform\\windows\\win32_process.cpp -o win32_process.o -Isrc -lkernel32",
+    "command": "clang++ -c -std=c++23 src\\platform\\windows\\win32_process.cpp -o win32_process.o -Isrc -lkernel32 -std=c++20",
     "file": "win32_process.cpp"
   },
   {
     "directory": "F:\\Dev\\projects\\cpp\\nox",
-    "command": "clang++ -c -std=c++23 src\\platform\\linux\\linux_process.cpp -o linux_process.o -Isrc",
+    "command": "clang++ -c -std=c++23 src\\platform\\linux\\linux_process.cpp -o linux_process.o -Isrc -std=c++20",
     "file": "linux_process.cpp"
   }
 ]
