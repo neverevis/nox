@@ -43,6 +43,6 @@ int main(int argc, char** argv)
         std::cout << "nox 0.0.1" << std::endl;
     }
     else{
-        std::cout << Color::purple << "[nox] " << Color::red << "unknown command" << Color::white << std::endl;
+        Log::println("{}unknown command", Color::red);
     }
 }

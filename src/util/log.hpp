@@ -2,6 +2,7 @@
 #include <string_view>
 #include <format>
 #include <iostream>
+#include <util/color.hpp>
 #include <cstdio>
 
 namespace Nox::Util{
@@ -9,7 +10,7 @@ namespace Nox::Util{
     public:
         template<typename... Args>
         static void println(std::format_string<Args...> fmt, Args&&... args){
-            std::cout << std::format(fmt, std::forward<Args>(args)...) << std::endl;
+            std::cout << std::format(fmt, std::forward<Args>(args)...) << Color::white << std::endl;
         }
     };
 }
