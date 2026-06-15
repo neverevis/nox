@@ -3,9 +3,13 @@
 #include <filesystem>
 #include <fstream>
 #include <util/color.hpp>
+#include <util/log.hpp>
+#include <platform/process.hpp>
 
 namespace fs = std::filesystem;
 using c = Nox::Util::Color;
+using Log = Nox::Util::Log;
+using Process = Nox::Process;
 
 namespace Nox{
     Command::Result Command::create(fs::path project){
@@ -54,6 +58,24 @@ namespace Nox{
     }
 
     bool Command::create_config(const fs::path& project){
+        std::ofstream main(project / "config.toml");
+
+        Log::println("{}[nox]{} creating config file",c::bright_green, c::bright_blue);
+        Log::print("{}detecting compiler {}-> ",c::cyan, c::yellow);
+
+        std::string compiler = "";
+
+        if(Process::execute("clang",{"--version"}).exit_code == 0){
+            Log::print("{}clang",c::bright_yellow);
+            compiler = "clang";
+        }
+        else if(Process::execute("gcc",{"--version"}).exit_code == 0){
+            Log::print("{}gcc",c::bright_yellow);
+        }
+
+        main << "language = c++\n";
+        main << "version = 23\n";
+        main << "compiler = clang\n";
         return true;
     }
 

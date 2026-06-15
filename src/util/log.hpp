@@ -12,5 +12,10 @@ namespace Nox::Util{
         static void println(std::format_string<Args...> fmt, Args&&... args){
             std::cout << std::format(fmt, std::forward<Args>(args)...) << Color::white << std::endl;
         }
+
+        template<typename... Args>
+        static void print(std::format_string<Args...> fmt, Args&&... args){
+            std::cout << std::format(fmt, std::forward<Args>(args)...) << Color::white;
+        }
     };
 }
