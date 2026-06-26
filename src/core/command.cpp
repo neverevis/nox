@@ -64,14 +64,24 @@ namespace Nox{
         Log::print("{}detecting compiler {}-> ",c::cyan, c::yellow);
 
         std::string compiler = "";
+        std::string compiler_version = "";
 
-        if(Process::execute("clang",{"--version"}).exit_code == 0){
-            Log::print("{}clang",c::bright_yellow);
+        Process::Result clang   = Process::execute("clang++",{"-dumpversion"});
+        Process::Result gcc     = Process::execute("g++",{"-dumpversion"});
+
+        if(clang.exit_code == 0){
+            Log::println("{}clang",c::bright_yellow);
             compiler = "clang";
+            compiler_version = clang.output_text;
+            
         }
-        else if(Process::execute("gcc",{"--version"}).exit_code == 0){
-            Log::print("{}gcc",c::bright_yellow);
+        else if(gcc.exit_code == 0){
+            Log::println("{}gcc",c::bright_yellow);
+            compiler = "gcc";
+            compiler_version = gcc.output_text;
         }
+
+        Log::println("compiler version: {}", compiler_version);
 
         main << "language = c++\n";
         main << "version = 23\n";
