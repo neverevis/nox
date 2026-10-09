@@ -4,6 +4,7 @@
 #include <fstream>
 #include <util/color.hpp>
 #include <util/log.hpp>
+#include <core/config.hpp>
 #include <platform/process.hpp>
 
 namespace fs = std::filesystem;
@@ -58,35 +59,37 @@ namespace Nox{
     }
 
     bool Command::create_config(const fs::path& project){
-        std::ofstream main(project / "config.toml");
+        Config config;
+        //std::ofstream main(project / "config.toml");
 
         Log::println("{}[nox]{} creating config file",c::bright_green, c::bright_blue);
-        Log::print("{}detecting compiler {}-> ",c::cyan, c::yellow);
+        
+        detect_compiler(config.compiler, config.compiler_version);
+        Log::println("{}detected compiler{}-> {}{} ",c::bright_cyan, c::yellow, c::red, config.compiler);
+        Log::println("{}compiler version{}-> {}{}",c::bright_cyan, c::yellow, c::bright_blue, config.compiler_version);
 
-        std::string compiler = "";
-        std::string compiler_version = "";
+        config.cpp_version = "23";
 
-        Process::Result clang   = Process::execute("clang++",{"-dumpversion"});
-        Process::Result gcc     = Process::execute("g++",{"-dumpversion"});
+        return true;
+    }
+
+    void Command::detect_compiler(std::string& compiler, std::string& compiler_version){
+        Process::Result clang   = Process::execute("clang",{"-dumpversion"});
+        Process::Result gcc     = Process::execute("gcc",{"-dumpversion"});
 
         if(clang.exit_code == 0){
-            Log::println("{}clang",c::bright_yellow);
             compiler = "clang";
             compiler_version = clang.output_text;
             
         }
         else if(gcc.exit_code == 0){
-            Log::println("{}gcc",c::bright_yellow);
             compiler = "gcc";
             compiler_version = gcc.output_text;
         }
-
-        Log::println("compiler version: {}", compiler_version);
-
-        main << "language = c++\n";
-        main << "version = 23\n";
-        main << "compiler = clang\n";
-        return true;
+        else{
+            compiler = "none";
+            compiler_version = "none";
+        }
     }
 
     bool Command::create_sources(const fs::path& project){

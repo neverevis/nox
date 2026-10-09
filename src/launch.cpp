@@ -1,5 +1,6 @@
 #include <platform/process.hpp>
 
+#include <util/output.hpp>
 #include <util/color.hpp>
 #include <util/log.hpp>
 #include <core/command.hpp>
@@ -23,7 +24,7 @@ int main(int argc, char** argv)
     if(action == "create"){
         if(argc < 3){
             Log::println("{}Project must have a {}name!\n{}Use: {}nox {}create {}\"project_name\"",Color::white, Color::cyan, Color::white, Color::bright_green, Color::white, Color::blue);
-            return -1;
+            return NOX_UNNAMED_PROJECT;
         }
 
         Nox::Command::Result rs = command.create(argv[2]);

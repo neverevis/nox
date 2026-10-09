@@ -18,5 +18,6 @@ namespace Nox{
         bool create_directories(const std::filesystem::path& project);
         bool create_config(const std::filesystem::path& project);
         bool create_sources(const std::filesystem::path& project);
+        void detect_compiler(std::string& compiler, std::string& compiler_version);
     };
 }
