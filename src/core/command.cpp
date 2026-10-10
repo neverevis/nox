@@ -52,6 +52,7 @@ namespace Nox{
         result &= fs::create_directory(project);
         result &= fs::create_directory(project / ".nox");
         result &= fs::create_directory(project / ".nox" / "includes");
+        result &= fs::create_directory(project / ".nox" / "libs");
         result &= fs::create_directory(project / "src");
         result &= fs::create_directory(project / "build");
 
@@ -60,16 +61,23 @@ namespace Nox{
 
     bool Command::create_config(const fs::path& project){
         Config config;
-        //std::ofstream main(project / "config.toml");
 
         Log::println("{}[nox]{} creating config file",c::bright_green, c::bright_blue);
-        
+
         detect_compiler(config.compiler, config.compiler_version);
+
         Log::println("{}detected compiler{}-> {}{} ",c::bright_cyan, c::yellow, c::red, config.compiler);
         Log::println("{}compiler version{}-> {}{}",c::bright_cyan, c::yellow, c::bright_blue, config.compiler_version);
 
         config.cpp_version = "23";
+        config.executable_name = "program";
+        config.build_directory = project / "build";
+        config.source_directory = project / "src";
 
+        return config.create_file(project);
+    }
+
+    bool Command::create_sources(const fs::path& project){
         return true;
     }
 
@@ -80,7 +88,7 @@ namespace Nox{
         if(clang.exit_code == 0){
             compiler = "clang";
             compiler_version = clang.output_text;
-            
+
         }
         else if(gcc.exit_code == 0){
             compiler = "gcc";
@@ -90,9 +98,5 @@ namespace Nox{
             compiler = "none";
             compiler_version = "none";
         }
-    }
-
-    bool Command::create_sources(const fs::path& project){
-        return true;
     }
 }

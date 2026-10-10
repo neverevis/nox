@@ -11,6 +11,7 @@ namespace Nox{
         };
 
         Result create(std::filesystem::path project);
+        Result create(std::filesystem::path project, std::string type);
         Result build();
         Result run();
 

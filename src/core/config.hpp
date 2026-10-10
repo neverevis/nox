@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <filesystem>
+namespace fs = std::filesystem;
 
 namespace Nox{
     class Config{
@@ -11,5 +12,7 @@ namespace Nox{
         std::string             compiler;
         std::string             compiler_version;
         std::string             cpp_version;
+
+        bool create_file(const fs::path& path);
     };
 }
